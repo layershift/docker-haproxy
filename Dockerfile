@@ -21,4 +21,6 @@ RUN wget http://www.haproxy.org/download/1.6/src/haproxy-1.6.9.tar.gz && \
 COPY ./haproxy.cfg /etc/haproxy/haproxy.cfg
 COPY ./start.sh /
 
+EXPOSE 3306 9000
+
 CMD [ "/start.sh" ]
