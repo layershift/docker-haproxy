@@ -28,7 +28,7 @@ def main():
                     servername = servername.split(",")
                     realserver = servername[0]
                     dttm = datetime.datetime.now()
-                    alert = "Alert raised at: " + dttm.isoformat() + "\n\n" + realserver + " has changed status!\n"+ servername[1] + " is now " + currentstat[i] + "\n\nPlease check HAProxy status page: http://layershift:wqG6phBp73zYsrJ6@node141737-magento5.j.layershift.co.uk/stats \n\nand Galera Cluster members!\n"
+                    alert = "Alert raised at: " + dttm.isoformat() + "\n\n" + realserver + " has changed status!\n"+ servername[1] + " is now " + currentstat[i] + "\n\nPlease check HAProxy status page: http://NODE/stats \n\nand Galera Cluster members!\n"
                     mail(str(alert))
         firstrun = False
         oldstat = []
@@ -36,8 +36,8 @@ def main():
         currentstat = []
         time.sleep(10)
 def mail(alert):
-    sender = 'root@node141737-magento5.j.layershift.co.uk'
-    reciever = 'bart+magento@layershift.com'
+    sender = ''
+    reciever = ''
     msg=MIMEText(alert)
     if "DOWN" in alert:
         msg["Subject"] = "[PROBLEM] [Magento 5]: HAproxy MySQL alert raised on " + socket.gethostname()
