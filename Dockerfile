@@ -14,6 +14,8 @@ COPY ./etc/supervisord.conf /etc/supervisord.conf
 COPY ./etc/supervisord.d/haproxy-alert.ini /etc/supervisord.d/haproxy-alert.ini
 
 RUN chmod +x /usr/bin/clustercheck
+RUN iptables -A PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 9000 && \
+    iptables-save > /etc/sysconfig/iptables
 
-EXPOSE 3306 9000
+EXPOSE 3306 9000 80
 
