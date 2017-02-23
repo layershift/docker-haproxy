@@ -2,9 +2,11 @@ FROM bbania/centos:base
 MAINTAINER "Bart Bania" <contact@bartbania.com>
 
 RUN yum update -y && \
-    yum install -y haproxy socat && \
-    yum install -y supervisord && \
-    systemctl enable supervisord && \
+    yum install -y haproxy socat
+
+RUN yum install -y supervisor
+
+RUN systemctl enable supervisord && \
     systemctl enable haproxy
 
 COPY ./haproxy.cfg /etc/haproxy/haproxy.cfg
