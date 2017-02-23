@@ -1,10 +1,10 @@
 FROM bbania/centos:base
 MAINTAINER "Bart Bania" <contact@bartbania.com>
 
-RUN yum update -y && \
-    yum install -y haproxy socat iptables
+RUN yum install -y haproxy socat iptables
 
 RUN yum install -y supervisor
+RUN yum clean all
 
 RUN systemctl enable supervisor && \
     systemctl enable haproxy
