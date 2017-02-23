@@ -9,10 +9,7 @@ webserver=socket.gethostname()                                      # hostname
 user=''                                                             # haproxy user
 password=''                                                         # haproxy password
 host_ip=socket.gethostbyname(socket.gethostname())                  # server IP
-wisdom_url=''                                                       # URL to wisdom page about the host/setup
 client=''                                                           # stack name
-stack=''                                                            # LIVE | DEV
-ctid=''
 
 def main():
     firstrun = True
@@ -38,7 +35,7 @@ def main():
                     servername = servername.split(",")
                     realserver = servername[0]
                     dttm = datetime.datetime.now()
-                    alert = "Alert raised at: " + dttm.isoformat() + "\n\n" + realserver + " has changed status!\n"+ servername[1] + " is now " + currentstat[i] + "\n\nPlease check HAProxy status page: http://"+user+":"+password+"@"+host_ip+"/stats ( "+user+":"+password+" )."
+                    alert = "Alert raised at: " + dttm.isoformat() + "\n\n" + realserver + " has changed status!\n"+ servername[1] + " is now " + currentstat[i] + "\n\nPlease check HAProxy status page: http://"+user+":"+password+"@"+webserver+"/stats ( "+user+":"+password+" )."
                     mail(str(alert))
 
         firstrun = False
@@ -55,9 +52,9 @@ def mail(alert):
     msg["To"] = you
 
     if "DOWN" in alert:
-        msg["Subject"] = "[Monitor] [PROBLEM]: " +servername[1]+ ": HAproxy MySQL alert raised on " + webserver
+        msg["Subject"] = "[Monitor] [PROBLEM]: " +client+ ": HAproxy MySQL alert raised on " + webserver
     elif "UP" in alert:
-        msg["Subject"] = "[Monitor] [OK]: "+servername[1]+": HAproxy MySQL alert cleared on " + webserver
+        msg["Subject"] = "[Monitor] [OK]: "+client+": HAproxy MySQL alert cleared on " + webserver
 
     s = smtplib.SMTP('localhost')
     try:
