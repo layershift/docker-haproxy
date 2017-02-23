@@ -45,6 +45,50 @@ Web GUI is accessible on http://node_hostname/stats
 There's a prerouting redirect of port 9000 to 80 in place.
 
 
+# Galera side
+
+On all Galera member nodes, you have to do the following:
+
+1) Create a file /etc/xinetd.d/mysqlchk with the contents below:
+
+    # default: on
+    # description: mysqlchk
+    service mysqlchk
+    {
+            disable = no
+            flags = REUSE
+            socket_type = stream
+            port = 9200
+            wait = no
+            user = nobody
+            server = /usr/bin/clustercheck
+            log_on_failure += USERID
+            only_from = 0.0.0.0/0
+            bind = 0.0.0.0
+            per_source = UNLIMITED
+    }
+
+2) Downlaod check script from Percona:
+
+    wget -O /usr/bin/clustercheck https://github.com/olafz/percona-clustercheck; chmod +x /usr/bin/clustercheck
+
+3) Adjust iptables to allow HAProxy helath checks
+
+    iptables -I INPUT -s <HAPROXY_IP>/32 -p tcp -m tcp --dport 9200 -j ACCEPT 
+
+4) add mysqlchk to services:
+
+    echo "mysqlchk        9200/tcp                # Galera Clustercheck" >> /etc/services
+
+5) Add HAProxy management users to databases:
+
+    GRANT PROCESS ON *.* TO 'haproxy_root'@'10.10.127.210' IDENTIFIED BY 'o4L4jw4mkimKZXy'; FLUSH PRIVILEGES;
+    GRANT PROCESS ON *.* TO 'clustercheckuser'@'localhost' IDENTIFIED BY 'clustercheckpassword!'; FLUSH PRIVILEGES;
+
+6) Restart xinetd:
+
+    systemctl restart xinetd
+
 # TODO
 
 * installation automation
