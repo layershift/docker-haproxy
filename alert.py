@@ -38,7 +38,7 @@ def main():
                     servername = servername.split(",")
                     realserver = servername[0]
                     dttm = datetime.datetime.now()
-                    alert = "Alert raised at: " + dttm.isoformat() + "\n\n" + realserver + " has changed status!\n"+ servername[1] + " is now " + currentstat[i] + "\n\nPlease check HAProxy status page: http://"+user+":"+password+"@"+host_ip+":9000/stats ( "+user+":"+password+" )."
+                    alert = "Alert raised at: " + dttm.isoformat() + "\n\n" + realserver + " has changed status!\n"+ servername[1] + " is now " + currentstat[i] + "\n\nPlease check HAProxy status page: http://"+user+":"+password+"@"+host_ip+"/stats ( "+user+":"+password+" )."
                     mail(str(alert))
 
         firstrun = False
