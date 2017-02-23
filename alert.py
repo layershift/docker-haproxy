@@ -4,6 +4,16 @@ import smtplib
 from email.mime.text import MIMEText
 import socket
 import datetime
+
+webserver=socket.gethostname()                                      # hostname
+user=''                                                             # haproxy user
+password=''                                                         # haproxy password
+host_ip=socket.gethostbyname(socket.gethostname())                  # server IP
+wisdom_url=''                                                       # URL to wisdom page about the host/setup
+client=''                                                           # stack name
+stack=''                                                            # LIVE | DEV
+ctid=''
+
 def main():
     firstrun = True
     currentstat = []
@@ -28,28 +38,31 @@ def main():
                     servername = servername.split(",")
                     realserver = servername[0]
                     dttm = datetime.datetime.now()
-                    alert = "Alert raised at: " + dttm.isoformat() + "\n\n" + realserver + " has changed status!\n"+ servername[1] + " is now " + currentstat[i] + "\n\nPlease check HAProxy status page: http://NODE/stats \n\nand Galera Cluster members!\n"
+                    alert = "Alert raised at: " + dttm.isoformat() + "\n\n" + realserver + " has changed status!\n"+ servername[1] + " is now " + currentstat[i] + "\n\nPlease check HAProxy status page: http://"+user+":"+password+"@"+host_ip+":9000/stats ( "+user+":"+password+" )."
                     mail(str(alert))
+
         firstrun = False
         oldstat = []
         oldstat = currentstat
         currentstat = []
         time.sleep(10)
+
 def mail(alert):
-    sender = ''
-    reciever = ''
+    me="root@" + webserver
+    you=""
     msg=MIMEText(alert)
+    msg["From"] = me
+    msg["To"] = you
+
     if "DOWN" in alert:
-        msg["Subject"] = "[PROBLEM] [Magento 5]: HAproxy MySQL alert raised on " + socket.gethostname()
+        msg["Subject"] = "[Monitor] [PROBLEM]: " +servername[1]+ ": HAproxy MySQL alert raised on " + webserver
     elif "UP" in alert:
-        msg["Subject"] = "[OK] [Magento 5]: HAproxy MySQL alert cleared on " + socket.gethostname()
-    else:
-        msg["Subject"] = "[Magento 5]: HAproxy MySQL alert on " + socket.gethostname()
-    msg["From"] = sender
-    msg["To"] = reciever
-    smtpObj = smtplib.SMTP('127.0.0.1', 25)
+        msg["Subject"] = "[Monitor] [OK]: "+servername[1]+": HAproxy MySQL alert cleared on " + webserver
+
+    s = smtplib.SMTP('localhost')
     try:
-        smtpObj.sendmail(sender, reciever, msg.as_string())
+        s.sendmail(me, [you], msg.as_string())
     finally:
-        smtpObj.quit()
+        s.quit()
+
 main()
