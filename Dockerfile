@@ -6,7 +6,7 @@ RUN yum update -y && \
 
 RUN yum install -y supervisor
 
-RUN systemctl enable supervisord haproxy iptables
+RUN systemctl enable supervisor haproxy iptables
 
 COPY ./haproxy.cfg /etc/haproxy/haproxy.cfg
 COPY ./etc/supervisord.conf /etc/supervisord.conf
