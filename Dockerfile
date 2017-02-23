@@ -4,7 +4,7 @@ MAINTAINER "Bart Bania" <contact@bartbania.com>
 RUN yum update -y && \
     yum install -y haproxy socat && \
     yum install -y supervisord && \
-    systemctl enable supervisord
+    systemctl enable supervisord && \
     systemctl enable haproxy
 
 COPY ./haproxy.cfg /etc/haproxy/haproxy.cfg
