@@ -6,10 +6,9 @@ import socket
 import datetime
 
 webserver=socket.gethostname()                                      # hostname
-user=''                                                             # haproxy user
-password=''                                                         # haproxy password
-host_ip=socket.gethostbyname(socket.gethostname())                  # server IP
-client=''                                                           # stack name
+user='haproxy'                                                      # haproxy user
+password='HAPASS'                                                   # haproxy password
+client='Galera Cluster'                                             # stack name
 
 def main():
     firstrun = True
@@ -46,15 +45,15 @@ def main():
 
 def mail(alert):
     me="root@" + webserver
-    you=""
+    you="EMAIL_ADDRESS"
     msg=MIMEText(alert)
     msg["From"] = me
     msg["To"] = you
 
     if "DOWN" in alert:
-        msg["Subject"] = "[Monitor] [PROBLEM]: " +client+ ": HAproxy MySQL alert raised on " + webserver
+        msg["Subject"] = "[PROBLEM]: " +client+ ": HAproxy MySQL alert raised on " + webserver
     elif "UP" in alert:
-        msg["Subject"] = "[Monitor] [OK]: "+client+": HAproxy MySQL alert cleared on " + webserver
+        msg["Subject"] = "[OK]: "+client+": HAproxy MySQL alert cleared on " + webserver
 
     s = smtplib.SMTP('localhost')
     try:
