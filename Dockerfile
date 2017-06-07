@@ -14,10 +14,6 @@ COPY ./etc/supervisord.d/haproxy-alert.ini /etc/haproxy/supervisor/d/haproxy-ale
 COPY ./etc/alert.py /etc/haproxy/scripts/
 COPY ./etc/iptables /etc/sysconfig/iptables
 
-RUN /bin/systemctl daemon-reload && \
-    /bin/systemctl enable supervisord && \
-    /bin/systemctl enable haproxy
-
 VOLUME "/etc/haproxy"
 
 EXPOSE 3306 80
