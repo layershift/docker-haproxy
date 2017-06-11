@@ -3,8 +3,13 @@ MAINTAINER "Bart Bania" <contact@bartbania.com>
 
 RUN yum install -y haproxy socat iptables
 RUN yum install -y supervisor
-RUN yum clean all
+RUN yum install -y python-pip python-devel gcc && \
+    pip install --upgrade pip && \
+    pip install mycli
+RUN yum erase -y python-devel && \
+    yum clean all
 
+RUN ln -s /usr/bin/mycli /usr/bin/mysql
 RUN mkdir -p /etc/haproxy/{supervisor,scripts}
 
 COPY ./etc/supervisord.service /usr/lib/systemd/system/supervisord.service
