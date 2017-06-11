@@ -10,3 +10,7 @@ The main configuration is located in [/etc/haproxy/haproxy.cfg](https://github.c
 
 The installation comes bundled with a simple [monitor script](https://github.com/bubbl/docker-haproxy/blob/master/alert.py) running under [supervisord](https://github.com/bubbl/docker-haproxy/blob/master/etc/supervisord.conf).
 
+## MySQL access
+
+This image has preinstalled [mycli](https://github.com/dbcli/mycli) tool for MySQL command line access.
+
