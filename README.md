@@ -2,6 +2,7 @@
 
 Made for [Layershift Jelastic PaaS](https://www.layershift.com/jelastic).
 
+
 ## About
 
 HAProxy in this installation is set up to serve as proxy between Galera Cluster and your application.
