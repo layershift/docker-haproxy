@@ -1,6 +1,7 @@
 FROM bbania/centos:base
-MAINTAINER "Bart Bania" <contact@bartbania.com>
+MAINTAINER "Layershift" <jelastic@layershift.com>
 
+RUN yum update -y
 RUN yum install -y haproxy socat iptables
 RUN yum install -y supervisor
 RUN yum install -y python-pip python-devel gcc && \
